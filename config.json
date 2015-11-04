@@ -1,0 +1,20 @@
+{
+  "publish_key": {
+	"label": "Publish",
+	"type": "String",
+	"required": true,
+	"help": "Pubnub Publish Key to use."
+  },
+  "subscribe_key": {
+	"label": "Subscribe Key",
+	"type": "String",
+	"required": true,
+	"help": "Pubnub Subscribe Key to use. Required by PubNub but is not used in this connector."
+  },
+  "channel": {
+	"label": "Channel",
+	"type": "String",
+	"required": true,
+	"help": "Pubnub channel to send data to."
+  }
+}
