@@ -34,6 +34,7 @@ platform.on('close', function () {
 
 	d.on('error', function (error) {
 		console.error(error);
+		platform.handleException(error);
 		platform.notifyClose();
 	});
 
@@ -50,9 +51,9 @@ platform.once('ready', function (options) {
 	channel = options.channel;
 
 	pubnubClient = require('pubnub')({
-		ssl: true,
 		publish_key: options.publish_key,
-		subscribe_key: options.subscribe_key
+		subscribe_key: options.subscribe_key,
+		ssl: true
 	});
 
 	platform.notifyReady();
