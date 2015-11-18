@@ -88,7 +88,7 @@ describe('Pubnub Connector', function () {
 				}, function (error) {
 					should.ifError(error);
 				});
-			}, 3000);
+			}, 4000);
 		});
 	});
 });

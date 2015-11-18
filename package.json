@@ -1,7 +1,7 @@
 {
   "name": "pubnub-connector",
   "description": "PubNub Connector Plugin for the Reekoh IoT Platform. Integrates a Reekoh instance to a PubNub to synchronise device data.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Reekoh, Inc.",
   "main": "app.js",
   "scripts": {
@@ -12,8 +12,8 @@
     "url": "https://github.com/Reekoh/pubnub-connector"
   },
   "dependencies": {
-    "is-json": "^1.2.5",
-    "pubnub": "^3.7.15"
+    "lodash.isplainobject": "^3.2.0",
+    "pubnub": "^3.7.16"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
