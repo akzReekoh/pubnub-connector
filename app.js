@@ -1,28 +1,32 @@
 'use strict';
 
-var platform = require('./platform'),
+var platform      = require('./platform'),
+	isPlainObject = require('lodash.isplainobject'),
 	pubnubClient, channel;
 
 /*
  * Listen for the data event.
  */
 platform.on('data', function (data) {
-	pubnubClient.publish({
-		channel: channel,
-		message: data,
-		callback: function (result) {
-			console.log('Result', result);
-			platform.log(JSON.stringify({
-				title: 'Pushed data to pubnub channel ' + channel,
-				data: data,
-				result: result
-			}));
-		},
-		error: function (error) {
-			console.error('Error', error);
-			platform.handleException(error);
-		}
-	});
+	if (isPlainObject(data)) {
+		pubnubClient.publish({
+			channel: channel,
+			message: data,
+			callback: function (result) {
+				platform.log(JSON.stringify({
+					title: 'Pushed data to pubnub channel ' + channel,
+					data: data,
+					result: result
+				}));
+			},
+			error: function (error) {
+				console.error('Error', error);
+				platform.handleException(error);
+			}
+		});
+	}
+	else
+		platform.handleException(new Error('Invalid data received. Data: ' + data));
 });
 
 /*
