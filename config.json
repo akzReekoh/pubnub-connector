@@ -7,7 +7,7 @@
   },
   "subscribe_key": {
 	"label": "Subscribe Key",
-	"type": "String",
+	"type": "Password",
 	"required": true,
 	"help": "Pubnub Subscribe Key to use. Required by PubNub but is not used in this connector."
   },
