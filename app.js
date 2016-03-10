@@ -1,37 +1,42 @@
 'use strict';
 
 var platform      = require('./platform'),
+	isArray = require('lodash.isarray'),
+	async = require('async'),
 	isPlainObject = require('lodash.isplainobject'),
 	pubnubClient, channel;
 
-/*
- * Listen for the data event.
- */
+let sendData = (data) => {
+	pubnubClient.publish({
+		channel: channel,
+		message: data,
+		callback: function (result) {
+			platform.log(JSON.stringify({
+				title: 'Pushed data to pubnub channel ' + channel,
+				data: data,
+				result: result
+			}));
+		},
+		error: function (error) {
+			console.error('Error', error);
+			platform.handleException(error);
+		}
+	});
+};
+
 platform.on('data', function (data) {
 	if (isPlainObject(data)) {
-		pubnubClient.publish({
-			channel: channel,
-			message: data,
-			callback: function (result) {
-				platform.log(JSON.stringify({
-					title: 'Pushed data to pubnub channel ' + channel,
-					data: data,
-					result: result
-				}));
-			},
-			error: function (error) {
-				console.error('Error', error);
-				platform.handleException(error);
-			}
+		sendData(data);
+	}
+	else if(isArray(data)){
+		async.each(data, (datum) => {
+			sendData(datum);
 		});
 	}
 	else
-		platform.handleException(new Error('Invalid data received. Data: ' + data));
+		platform.handleException(new Error(`Invalid data received. Data must be a valid Array/JSON Object or a collection of objects. Data: ${data}`));
 });
 
-/*
- * Event to listen to in order to gracefully release all resources bound to this service.
- */
 platform.on('close', function () {
 	var domain = require('domain');
 	var d = domain.create();
@@ -48,9 +53,6 @@ platform.on('close', function () {
 	});
 });
 
-/*
- * Listen for the ready event.
- */
 platform.once('ready', function (options) {
 	channel = options.channel;
 
