@@ -6,7 +6,7 @@ var platform      = require('./platform'),
 	isPlainObject = require('lodash.isplainobject'),
 	pubnubClient, channel;
 
-let sendData = (data) => {
+let sendData = (data, callback) => {
 	pubnubClient.publish({
 		channel: channel,
 		message: data,
@@ -18,19 +18,28 @@ let sendData = (data) => {
 			}));
 		},
 		error: function (error) {
-			console.error('Error', error);
-			platform.handleException(error);
+			callback(error);
 		}
 	});
 };
 
 platform.on('data', function (data) {
-	if (isPlainObject(data)) {
-		sendData(data);
+	if(isPlainObject(data)){
+		sendData(data, (error) => {
+			if(error) {
+				console.error(error);
+				platform.handleException(error);
+			}
+		});
 	}
 	else if(isArray(data)){
-		async.each(data, (datum) => {
-			sendData(datum);
+		async.each(data, (datum, done) => {
+			sendData(datum, done);
+		}, (error) => {
+			if(error) {
+				console.error(error);
+				platform.handleException(error);
+			}
 		});
 	}
 	else
