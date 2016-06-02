@@ -1,8 +1,8 @@
 'use strict';
 
 var platform      = require('./platform'),
-	isArray = require('lodash.isarray'),
-	async = require('async'),
+	isArray       = require('lodash.isarray'),
+	async         = require('async'),
 	isPlainObject = require('lodash.isplainobject'),
 	pubnubClient, channel;
 
@@ -10,36 +10,30 @@ let sendData = (data, callback) => {
 	pubnubClient.publish({
 		channel: channel,
 		message: data,
-		callback: function (result) {
+		callback: (result) => {
 			platform.log(JSON.stringify({
-				title: 'Pushed data to pubnub channel ' + channel,
+				title: `Pushed data to pubnub channel: ${channel}`,
 				data: data,
 				result: result
 			}));
+
+			callback();
 		},
-		error: function (error) {
-			callback(error);
-		}
+		error: callback
 	});
 };
 
 platform.on('data', function (data) {
-	if(isPlainObject(data)){
+	if (isPlainObject(data)) {
 		sendData(data, (error) => {
-			if(error) {
-				console.error(error);
-				platform.handleException(error);
-			}
+			if (error) platform.handleException(error);
 		});
 	}
-	else if(isArray(data)){
+	else if (isArray(data)) {
 		async.each(data, (datum, done) => {
 			sendData(datum, done);
 		}, (error) => {
-			if(error) {
-				console.error(error);
-				platform.handleException(error);
-			}
+			if (error) platform.handleException(error);
 		});
 	}
 	else
@@ -47,8 +41,7 @@ platform.on('data', function (data) {
 });
 
 platform.on('close', function () {
-	var domain = require('domain');
-	var d = domain.create();
+	var d = require('domain').create();
 
 	d.on('error', function (error) {
 		console.error(error);
