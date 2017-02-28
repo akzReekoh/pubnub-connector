@@ -1,20 +1,23 @@
 {
-  "publish_key": {
+  "publishKey": {
 	"label": "Publish",
 	"type": "String",
 	"required": true,
-	"help": "Pubnub Publish Key to use."
+	"help": "Pubnub Publish Key to use.",
+    "maxLength": 100
   },
-  "subscribe_key": {
+  "subscribeKey": {
 	"label": "Subscribe Key",
 	"type": "Password",
 	"required": true,
-	"help": "Pubnub Subscribe Key to use. Required by PubNub but is not used in this connector."
+	"help": "Pubnub Subscribe Key to use. Required by PubNub but is not used in this connector.",
+    "maxLength": 100
   },
   "channel": {
 	"label": "Channel",
 	"type": "String",
 	"required": true,
-	"help": "Pubnub channel to send data to."
+	"help": "Pubnub channel to send data to.",
+    "maxLength": 50
   }
 }
