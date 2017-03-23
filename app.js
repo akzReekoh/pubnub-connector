@@ -24,11 +24,6 @@ let sendData = (data, callback) => {
   })
 }
 
-/**
- * Emitted when device data is received.
- * This is the event to listen to in order to get real-time data feed from the connected devices.
- * @param {object} data The data coming from the device represented as JSON Object.
- */
 _plugin.on('data', (data) => {
   if (isPlainObject(data)) {
     sendData(data, (error) => {
@@ -45,9 +40,19 @@ _plugin.on('data', (data) => {
   }
 })
 
-/**
- * Emitted when the platform bootstraps the plugin. The plugin should listen once and execute its init process.
- */
+process.on('SIGINT', () => {
+  let d = require('domain').create()
+
+  d.on('error', (error) => {
+    console.error(error)
+    _plugin.logException(error)
+  })
+
+  d.run(function () {
+    pubnubClient.shutdown()
+  })
+})
+
 _plugin.once('ready', () => {
   pubnubClient = require('pubnub')({
     publishKey: _plugin.config.publishKey,

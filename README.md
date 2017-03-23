@@ -13,7 +13,7 @@ The PubNub Connector Plugin will push or publish data coming from your connected
 
 The following configuration parameters are injected to the plugin from the platform.
 
-* publish_key - The PubNub publish key to use.
-* subscribe_key - The PubNub subscribe key. This is required by the PubNub SDK but is not used by the plugin.
+* publishKey - The PubNub publish key to use.
+* subscribeKey - The PubNub subscribe key. This is required by the PubNub SDK but is not used by the plugin.
 * channel - The PubNub channel where the plugin will publish the device data.
 

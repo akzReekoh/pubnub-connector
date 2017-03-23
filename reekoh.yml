@@ -1,0 +1,35 @@
+---
+version: 1.0.0 # So we could parse new versions of the manifest without dropping support for older ones. The CLI should be able to parse the YAML file based on the version
+kind: Plugin # We will add other objects that can be uploaded in the registry like: Add-ons, full-blown applications, bots and others TBD
+metadata:
+  name: pubnub-connector
+  description: PubNub Connector Plugin for the Reekoh IoT Platform. Integrates a Reekoh instance to a PubNub to synchronise device data.
+  documentation: ./README.md
+  icon: ./pubnub.png
+  signupLink:
+  type: Connector
+  price: 0
+  tags:
+    - pubnub
+  config:
+    publishKey:
+      label: Publish
+      type: String
+      required: true
+      help: Pubnub Publish Key to use.
+      maxLength: 1000
+    subscribeKey:
+      label: Subscribe Key
+      type: Password
+      required: true
+      help: Pubnub Subscribe Key to use. Required by PubNub but is not used in this connector.
+    channel:
+      label: Channel
+      type: String
+      required: true
+      help: Pubnub channel to send data to.
+      maxLength: 1000
+  release:
+    version: 1.0.0
+    notes: path/to/RELEASENOTESv1.0.0.md
+    image: path/to/docker/image
